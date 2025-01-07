@@ -1,0 +1,26 @@
+services:
+  nginx:
+    build:
+      context: ./src/nginx
+      dockerfile: ./Dockerfile
+    ports:
+      - "8080:80"
+    networks:
+      - network
+  
+  mariadb:
+    build:
+      context: ./src/mariadb
+      dockerfile: ./Dockerfile
+    ports:
+      - "3306:3306"
+    volumes:
+      - mariadb-data:/var/lib/mysql
+    networks:
+      - network
+
+volumes:
+  mariadb-data:
+networks:
+  network:
+    driver: bridge
