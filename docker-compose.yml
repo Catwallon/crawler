@@ -1,26 +1,57 @@
 services:
-  nginx:
-    build:
-      context: ./src/nginx
-      dockerfile: ./Dockerfile
-    ports:
-      - "8080:80"
-    networks:
-      - network
-  
   mariadb:
     build:
-      context: ./src/mariadb
-      dockerfile: ./Dockerfile
-    ports:
-      - "3306:3306"
+      context: mariadb
     volumes:
       - mariadb-data:/var/lib/mysql
+    env_file:
+      - .env
     networks:
       - network
+    restart: always
+
+  api:
+    build:
+      context: api
+      args:
+        - API_PORT=${API_PORT}
+    env_file:
+      - .env
+    ports:
+      - "${API_PORT}:${API_PORT}"
+    networks:
+      - network
+    depends_on:
+      - mariadb
+    restart: always
+
+  nginx:
+    build:
+      context: nginx
+      args:
+        - API_HOST=${API_HOST}
+        - API_PORT=${API_PORT}
+    ports:
+      - "80:80"
+    networks:
+      - network
+    depends_on:
+      - api
+    restart: always
+
+  crawler:
+    build:
+      context: crawler
+    env_file:
+      - .env
+    networks:
+      - network
+    depends_on:
+      - mariadb
 
 volumes:
   mariadb-data:
+
 networks:
   network:
     driver: bridge
