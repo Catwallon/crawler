@@ -1,7 +1,7 @@
 all: build
 
 build:
-	docker-compose --project-name search-engine build
+	docker-compose --project-name search-engine up --build --no-start
 
 start:
 	docker-compose --project-name search-engine up --build
