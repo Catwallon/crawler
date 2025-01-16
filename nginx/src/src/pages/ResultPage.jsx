@@ -17,8 +17,8 @@ function ResultPage() {
 		const startTime = new Date().getTime();
 		const api_host = import.meta.env.VITE_API_HOST
 		const api_port = import.meta.env.VITE_API_PORT
-		console.log('http://' + api_host+ ':' + api_port + '/search?query=' + query)
-		axios.get('http://' + api_host+ ':' + api_port + '/search?query=' + query).then((response) => {
+		console.log('https://' + api_host+ ':' + api_port + '/search?query=' + query)
+		axios.get('https://' + api_host+ ':' + api_port + '/search?query=' + query).then((response) => {
 			const endTime = new Date().getTime();
 			const timeTaken = endTime - startTime;
 			setResponseTime(timeTaken);

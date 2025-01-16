@@ -13,6 +13,9 @@ RUN apt-get update && apt-get install -y \
 ARG API_PORT
 ARG API_HOST
 
+COPY certificat.crt /etc/nginx/ssl/
+COPY private.key /etc/nginx/ssl/
+
 ENV VITE_API_HOST=$API_HOST
 ENV VITE_API_PORT=$API_PORT
 
@@ -34,5 +37,6 @@ RUN cp -r phpMyAdmin-*-all-languages/* /usr/share/phpmyadmin
 COPY ./config.inc.php /usr/share/phpmyadmin
 
 EXPOSE 80
+EXPOSE 443
 
 CMD env && service php8.2-fpm start && chmod 666 /run/php/php8.2-fpm.sock && nginx -g "daemon off;"

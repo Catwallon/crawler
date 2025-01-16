@@ -56,9 +56,13 @@ func main() {
 
 	mux.HandleFunc("/search", search)
 
-	handler := cors.Default().Handler(mux)
-	log.Fatal(http.ListenAndServe(":"+os.Getenv("API_PORT"), handler))
-
+	handler := cors.New(cors.Options{
+		AllowedOrigins:   []string{"*"},
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"Content-Type", "Authorization"},
+		AllowCredentials: true,
+	}).Handler(mux)
+	log.Fatal(http.ListenAndServeTLS(":"+os.Getenv("API_PORT"), "/cert/certificat.crt", "/cert/private.key", handler))
 }
 
 func search(w http.ResponseWriter, r *http.Request) {

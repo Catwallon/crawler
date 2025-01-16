@@ -9,6 +9,9 @@ ARG API_PORT
 
 WORKDIR /root
 
+COPY certificat.crt /cert/
+COPY private.key /cert/
+
 # Build api
 COPY src/* .
 RUN go mod tidy
