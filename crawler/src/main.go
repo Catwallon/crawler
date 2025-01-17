@@ -79,8 +79,15 @@ func scrap_page(db *sql.DB, rawURL string) {
 		page.Title = e.Text
 	})
 	c.OnHTML("a", func(e *colly.HTMLElement) {
-		if startsWithHTTP(e.Attr("href")) {
-			urls = append(urls, e.Attr("href"))
+		urlFound := e.Attr("href")
+		if startsWithHTTP(urlFound) {
+			parsedURL, err := url.Parse(urlFound)
+			if err != nil {
+				log.Println("ERROR PARSING: ", e.Attr("href"))
+				return
+			}
+			parsedURL.RawQuery = ""
+			urls = append(urls, parsedURL.String())
 		}
 	})
 	er := c.Visit(rawURL)
