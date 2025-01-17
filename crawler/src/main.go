@@ -32,24 +32,23 @@ func exit_err(msg string, err interface{}) {
 func connect_db() *sql.DB {
 	password := os.Getenv("MYSQL_ROOT_PASSWORD")
 	dsn := fmt.Sprintf("root:%s@tcp(mariadb:3306)/db", password)
-	fmt.Println(dsn)
 	for i := 5; i > 0; i-- {
 		db, err := sql.Open("mysql", dsn)
 		if err != nil {
-			fmt.Println("Can't connect database", err)
-			fmt.Println("Retry in 10 sec... ", i-1, " try remaining")
+			log.Println("Can't connect database", err)
+			log.Println("Retry in 10 sec... ", i-1, " try remaining")
 			time.Sleep(10 * time.Second)
 			continue
 		}
 		err = db.Ping()
 		if err != nil {
-			fmt.Println("Can't connect database", err)
-			fmt.Println("Retry in 10 sec... ", i-1, " try remaining")
+			log.Println("Can't connect database", err)
+			log.Println("Retry in 10 sec... ", i-1, " try remaining")
 			time.Sleep(10 * time.Second)
 			db.Close()
 			continue
 		}
-		fmt.Println("Successfully connected to database", err)
+		log.Println("Successfully connected to database")
 		return db
 	}
 	log.Fatal("Failed to connect to database, exiting")
@@ -70,7 +69,7 @@ func scrap_page(db *sql.DB, rawURL string) {
 	var urls []string
 	parsedURL, err := url.Parse(rawURL)
 	if err != nil {
-		fmt.Println("ERROR PARSING: ", rawURL)
+		log.Println("ERROR PARSING: ", rawURL)
 		return
 	}
 	page.Website = parsedURL.Host
@@ -86,10 +85,10 @@ func scrap_page(db *sql.DB, rawURL string) {
 	})
 	er := c.Visit(rawURL)
 	if er != nil {
-		fmt.Println("ERROR SCRAPING: ", rawURL)
+		log.Println("ERROR SCRAPING: ", rawURL)
 	} else {
 		index_page(db, page)
-		fmt.Println("INDEXED: ", rawURL)
+		log.Println("INDEXED: ", rawURL)
 		next_url(db, urls)
 	}
 }
@@ -102,10 +101,7 @@ func next_url(db *sql.DB, urls []string) {
 		mu.Unlock()
 		if err != nil {
 			exit_err("Can't search into table", err)
-		}
-		if indexed {
-			fmt.Println("ALREADY INDEXED: ", urls[i])
-		} else {
+		} else if !indexed {
 			scrap_page(db, urls[i])
 		}
 	}

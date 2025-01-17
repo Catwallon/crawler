@@ -28,24 +28,23 @@ func connect_db() {
 	var err error
 	password := os.Getenv("MYSQL_ROOT_PASSWORD")
 	dsn := fmt.Sprintf("root:%s@tcp(mariadb:3306)/db", password)
-	fmt.Println(dsn)
 	for i := 5; i > 0; i-- {
 		db, err = sql.Open("mysql", dsn)
 		if err != nil {
-			fmt.Println("Can't connect database", err)
-			fmt.Println("Retry in 10 sec... ", i-1, " try remaining")
+			log.Println("Can't connect database", err)
+			log.Println("Retry in 10 sec... ", i-1, " try remaining")
 			time.Sleep(10 * time.Second)
 			continue
 		}
 		err = db.Ping()
 		if err != nil {
-			fmt.Println("Can't connect database", err)
-			fmt.Println("Retry in 10 sec... ", i-1, " try remaining")
+			log.Println("Can't connect database", err)
+			log.Println("Retry in 10 sec... ", i-1, " try remaining")
 			time.Sleep(10 * time.Second)
 			db.Close()
 			continue
 		}
-		fmt.Println("Successfully connected to database", err)
+		log.Println("Successfully connected to database")
 		break
 	}
 }
@@ -68,7 +67,7 @@ func main() {
 func search(w http.ResponseWriter, r *http.Request) {
 	queryParams := r.URL.Query()
 	search := queryParams.Get("query")
-	fmt.Println(search)
+	log.Printf("%s %s", r.Method, r.URL.String())
 	query := "SELECT website, url, title, description FROM pages WHERE title LIKE ?"
 	rows, err := db.Query(query, "%"+search+"%")
 	if err != nil {
