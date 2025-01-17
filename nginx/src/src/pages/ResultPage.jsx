@@ -1,23 +1,22 @@
-import Search from '../components/Search'
-import { Typography, Link } from '@mui/material';
-import { useLocation } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import axios from 'axios';
+import { Typography, Link } from '@mui/material';
+import Search from '../components/Search'
 
-function ResultPage() {
+const ResultPage = () => {
 	const [data, setData] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
 	const [responseTime, setResponseTime] = useState(null);
 
 	const location = useLocation();
+	const query = new URLSearchParams(location.search).get('query')
 
 	useEffect(() => {
-		const query = new URLSearchParams(location.search).get('query')
 		const startTime = new Date().getTime();
 		const api_host = import.meta.env.VITE_API_HOST
 		const api_port = import.meta.env.VITE_API_PORT
-		console.log('https://' + api_host+ ':' + api_port + '/search?query=' + query)
 		axios.get('https://' + api_host+ ':' + api_port + '/search?query=' + query).then((response) => {
 			const endTime = new Date().getTime();
 			const timeTaken = endTime - startTime;
@@ -25,8 +24,7 @@ function ResultPage() {
 			setData(response.data);
 			setLoading(false);
 		}).catch((error) => {
-			
-			setError(error);
+			setError(error.message);
 			setLoading(false);
 		});
 	}, [location.search]);
@@ -34,9 +32,9 @@ function ResultPage() {
 	var i = 0;
 	return (
 		<>
-			<Search></Search>
+			<Search query={query}></Search>
 			{loading && <Typography>Loading...</Typography>}
-			{error && <Typography>Error: {error}</Typography>}
+			{error && <Typography color="error">Error: {error}</Typography>}
 			{!loading && !error && data &&
 				<>
 					<br />

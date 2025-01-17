@@ -1,10 +1,10 @@
-import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { IconButton, Box, TextField, Typography, Link } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import Logo from "../assets/logo.svg?react";
 
-function Search() {
+const Search = ({ query }) => {
 	const navigate = useNavigate();
 	const [searchInput, setSearchInput] = useState('');
 
@@ -20,7 +20,10 @@ function Search() {
 	return (
 		<>
 			<Link component={RouterLink} to="/" sx={{textDecoration: 'none' }}>
-				<Typography variant="h5" color="black" sx={{ textAlign: 'center', mt: 5, mb: 3 }}>Search engine</Typography>
+			<Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mt: 5, mb: 3 }}>
+				<Logo style={{ marginRight: 8 }} />
+				<Typography variant="h5" color="black">Search engine</Typography>
+  			</Box>
 			</Link>
 			<Box
 				sx={{
@@ -33,7 +36,7 @@ function Search() {
 			>
 				<form onSubmit={search}>
 					<TextField
-						value={searchInput}
+						value={query}
 						onChange={handleChange}
 						placeholder="Tap your search"
 						size="small"

@@ -2,13 +2,11 @@ import Search from '../components/Search'
 
 import { Box } from '@mui/material';
 
-function SearchPage() {
+const SearchPage = () => {
 	return (
-		<>
-			<Box minHeight="100vh" display="flex" flexDirection="column" justifyContent="center">
-				<Search></Search>
-			</Box>
-		</>
+		<Box minHeight="100vh" display="flex" flexDirection="column" justifyContent="center">
+			<Search></Search>
+		</Box>
 	)
 }
 
