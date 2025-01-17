@@ -36,7 +36,7 @@ const Search = ({ query }) => {
 			>
 				<form onSubmit={search}>
 					<TextField
-						value={query}
+						defaultValue={query}
 						onChange={handleChange}
 						placeholder="Tap your search"
 						size="small"
