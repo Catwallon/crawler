@@ -44,7 +44,7 @@ const ResultPage = () => {
 						{data.map((page) => (
 							<li key={i++}>
 								<Link href={page.Url}>{page.Title}</Link>
-								<Typography>{page.Url}</Typography>
+								<Typography>{page.Description}</Typography>
 								<br />
 							</li>
 						))}

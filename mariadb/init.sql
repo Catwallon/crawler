@@ -6,6 +6,6 @@ CREATE TABLE `db`.`pages` (
 	`url` TEXT NOT NULL,
 	`title` TEXT NOT NULL,
 	`description` TEXT NOT NULL,
-	`keywords` TEXT NOT NULL,
-	`score` INT NOT NULL
+	`keywords` JSON NOT NULL,
+	`lang` TEXT NOT NULL
 ) ENGINE = InnoDB; 

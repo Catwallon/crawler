@@ -10,7 +10,7 @@ ARG API_PORT
 WORKDIR /root
 
 # Build api
-COPY src/* .
+COPY src/ .
 RUN go mod tidy
 RUN go build -o crawler .
 

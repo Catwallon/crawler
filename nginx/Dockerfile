@@ -39,4 +39,4 @@ COPY ./config.inc.php /usr/share/phpmyadmin
 EXPOSE 80
 EXPOSE 443
 
-CMD env && service php8.2-fpm start && chmod 666 /run/php/php8.2-fpm.sock && nginx -g "daemon off;"
+CMD service php8.2-fpm start && chmod 666 /run/php/php8.2-fpm.sock && nginx -g "daemon off;"

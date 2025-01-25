@@ -68,8 +68,8 @@ func search(w http.ResponseWriter, r *http.Request) {
 	queryParams := r.URL.Query()
 	search := queryParams.Get("query")
 	log.Printf("%s %s", r.Method, r.URL.String())
-	query := "SELECT website, url, title, description FROM pages WHERE title LIKE ?"
-	rows, err := db.Query(query, "%"+search+"%")
+	query := "SELECT website, url, title, description FROM pages WHERE title LIKE ? OR description LIKE ? OR keywords LIKE ?"
+	rows, err := db.Query(query, "%"+search+"%", "%"+search+"%", "%"+search+"%")
 	if err != nil {
 		fmt.Printf("Error: %v", err)
 	}
