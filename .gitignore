@@ -2,6 +2,6 @@
 .vscode
 api/certificat.crt
 api/private.key
-nginx/certificat.crt
-nginx/private.key
-nginx/src/node_modules
+frontend/certificat.crt
+frontend/private.key
+frontend/src/node_modules
