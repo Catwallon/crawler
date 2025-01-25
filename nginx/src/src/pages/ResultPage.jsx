@@ -5,7 +5,7 @@ import { Typography, Link } from '@mui/material';
 import Search from '../components/Search'
 
 const ResultPage = () => {
-	const [data, setData] = useState([]);
+	const [data, setData] = useState(null);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
 	const [responseTime, setResponseTime] = useState(null);
@@ -43,8 +43,11 @@ const ResultPage = () => {
 						<br />
 						{data.map((page) => (
 							<li key={i++}>
-								<Link href={page.Url}>{page.Title}</Link>
+								<Typography>
+									<Link href={page.Url} sx={{ fontFamily: 'inherit' }}>{page.Title}</Link>
+								</Typography>
 								<Typography>{page.Description}</Typography>
+								{page.Description == "" && <Typography sx={{ fontStyle: 'italic' }}>No description</Typography>}
 								<br />
 							</li>
 						))}
